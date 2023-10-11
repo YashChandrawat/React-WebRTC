@@ -2,7 +2,9 @@ import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import peer from "../service/peer";
 import { useSocket } from "../context/SocketProvider";
-import "./RoomPage.css"
+import "./RoomPage.css";
+import { BiSolidPhoneCall } from "react-icons/bi";
+import { BsFillCameraVideoFill } from "react-icons/bs";
 
 const RoomPage = () => {
   const socket = useSocket();
@@ -114,32 +116,53 @@ const RoomPage = () => {
     <div className="main-room">
       <h1>Start Video Call</h1>
       <h4>{remoteSocketId ? "Connected" : "Waiting..."}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
-      {myStream && (
-        <>
-          <h1>My Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={myStream}
-          />
-        </>
-      )}
-      {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={remoteStream}
-          />
-        </>
-      )}
+
+      <div className="bottom-part">
+        <div className="left-part-bottom">
+          {myStream && (
+            <>
+              <h1>ME</h1>
+              <div className="video-container">
+                <ReactPlayer
+                  playing
+                  muted
+                  width="100%"
+                  height="100%"
+                  url={myStream}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div className="right-part-bottom">
+          {remoteStream && (
+            <>
+              <h1>YOU</h1>
+              <div className="video-container">
+                <ReactPlayer
+                  playing
+                  muted
+                  width="100%"
+                  height="100%"
+                  url={remoteStream}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="buttons-bottom">
+        {remoteSocketId && (
+          <button className="call-button" onClick={handleCallUser}>
+            <BiSolidPhoneCall style={{ fontSize: "1.5rem" }} />
+          </button>
+        )}
+        {myStream && (
+          <button onClick={sendStreams} className="call-button">
+            <BsFillCameraVideoFill style={{ fontSize: "1.5rem" }} />
+          </button>
+        )}
+      </div>
     </div>
   );
 };
